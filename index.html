@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REENKS - Современная социальная сеть</title>
+    <meta name="description" content="REENKS - современная социальная сеть с реальным временем общения. Присоединяйтесь к сообществу!">
+    <meta name="keywords" content="социальная сеть, REENKS, общение, посты, сообщества">
+    <meta property="og:title" content="REENKS - Социальная сеть">
+    <meta property="og:description" content="Современная платформа для общения в реальном времени">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    
+    <style>
+        /* Базовые сбросы и переменные */
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #ff6b6b;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --gray: #718096;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --radius: 15px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Навбар */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        /* Основной контент */
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 2rem;
+        }
+
+        /* Карточки */
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Левая панель */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .user-card:hover {
+            background: var(--light);
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-item:hover {
+            background: var(--light);
+        }
+
+        .menu-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Центральная лента */
+        .create-post {
+            margin-bottom: 2rem;
+        }
+
+        .post-input {
+            width: 100%;
+            min-height: 120px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .post-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background: var(--light);
+            color: var(--primary);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Посты */
+        .post {
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-author {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .post-time {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .post-content {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 0.9rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-actions-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .post-action:hover {
+            background: var(--light);
+            color: var(--primary);
+        }
+
+        /* Правая панель */
+        .online-users {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .online-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .online-user:hover {
+            background: var(--light);
+        }
+
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-left: 4px solid var(--success);
+            transform: translateX(400px);
+            transition: var(--transition);
+            z-index: 1001;
+            max-width: 400px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left-color: var(--success);
+        }
+
+        .notification.error {
+            border-left-color: var(--accent);
+        }
+
+        .notification.info {
+            border-left-color: var(--primary);
+        }
+
+        .notification.warning {
+            border-left-color: var(--warning);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 250px 1fr;
+            }
+            
+            .right-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+                margin-top: 60px;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .navbar {
+                padding: 0.75rem 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .post-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .action-buttons {
+                justify-content: center;
+            }
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: translateX(100%); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateX(0); 
+                opacity: 1; 
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(72, 187, 120, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(72, 187, 120, 0);
+            }
+        }
+
+        /* Загрузчик */
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Пустые состояния */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--gray);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Темная тема */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --dark: #f7fafc;
+                --light: #2d3748;
+            }
+            
+            .card {
+                background: #4a5568;
+                color: white;
+            }
+            
+            .post-input {
+                background: #4a5568;
+                color: white;
+                border-color: #718096;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навбар -->
+    <nav class="navbar" role="navigation" aria-label="Основная навигация">
+        <div class="logo" aria-label="REENKS логотип">REENKS</div>
+        <div class="nav-links">
+            <a href="#" class="nav-link" aria-label="Главная страница">🏠 Главная</a>
+            <a href="#" class="nav-link" aria-label="Уведомления">🔔 Уведомления</a>
+            <a href="#" class="nav-link" aria-label="Сообщения">💬 Сообщения</a>
+            <a href="#" class="nav-link" aria-label="Профиль">👤 Профиль</a>
+        </div>
+    </nav>
+
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        <div id="notificationMessage">Добро пожаловать в REENKS!</div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <!-- Левая панель -->
+        <aside class="sidebar">
+            <div class="card">
+                <div class="user-card" id="userCard">
+                    <img src="https://ui-avatars.com/api/?name=Loading+User&background=667eea&color=fff" alt="Аватар пользователя" class="user-avatar" id="userAvatar">
+                    <div>
+                        <div id="userName">Загрузка...</div>
+                        <div style="color: var(--success); font-size: 0.9rem;" id="userStatus">● подключение...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 1rem;">
+                <a href="#" class="menu-item active" aria-label="Новости">
+                    <span>🏠</span>
+                    <span>Новости</span>
+                </a>
+                <a href="#" class="menu-item" aria-label="Друзья">
+                    <span>👥</span>
+                    <span>Друзья</span>
+                </a>
+                <a href="#" class="menu-item" aria-label="Сообщения">
+                    <span>💬</span>
+                    <span>Сообщения</span>
+                </a>
+                <a href="#" class="menu-item" aria-label="Истории">
+                    <span>📸</span>
+                    <span>Истории</span>
+                </a>
+                <a href="#" class="menu-item" aria-label="Игры">
+                    <span>🎮</span>
+                    <span>Игры</span>
+                </a>
+            </div>
+
+            <div class="card" style="margin-top: 1rem;">
+                <h3 style="margin-bottom: 1rem;">Группы</h3>
+                <a href="#" class="menu-item" aria-label="Группа разработчиков">
+                    <span>🚀</span>
+                    <span>Разработчики</span>
+                </a>
+                <a href="#" class="menu-item" aria-label="Группа дизайна">
+                    <span>🎨</span>
+                    <span>Дизайн</span>
+                </a>
+                <a href="#" class="menu-item" aria-label="Группа музыки">
+                    <span>🎵</span>
+                    <span>Музыка</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Центральная лента -->
+        <main role="main">
+            <!-- Создание поста -->
+            <div class="card create-post">
+                <div class="post-header">
+                    <img src="https://ui-avatars.com/api/?name=You+User&background=667eea&color=fff" alt="Ваш аватар" class="user-avatar" id="currentUserAvatar">
+                    <textarea 
+                        class="post-input" 
+                        id="postInput" 
+                        placeholder="Что у вас нового? Расскажите миру! 🌍"
+                        aria-label="Текст поста"
+                        maxlength="500"
+                    ></textarea>
+                </div>
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <button class="action-btn" aria-label="Добавить фото">
+                            📷 Фото
+                        </button>
+                        <button class="action-btn" aria-label="Добавить видео">
+                            🎥 Видео
+                        </button>
+                        <button class="action-btn" aria-label="Добавить эмоцию">
+                            😊 Эмоция
+                        </button>
+                        <button class="action-btn" aria-label="Добавить местоположение">
+                            📍 Место
+                        </button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span id="charCount" style="color: var(--gray); font-size: 0.9rem;">0/500</span>
+                        <button class="btn" onclick="createPost()" aria-label="Опубликовать пост">
+                            <span id="postButtonText">Опубликовать</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Лента постов -->
+            <div id="postsFeed">
+                <div class="card">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <h3>Лента пуста</h3>
+                        <p>Будьте первым, кто опубликует пост!</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Правая панель -->
+        <aside class="sidebar right-sidebar">
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">👥 Онлайн сейчас</h3>
+                <div class="online-users" id="onlineUsers">
+                    <div class="empty-state" style="padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">👤</div>
+                        <div style="font-size: 0.9rem;">Никого нет онлайн</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 1rem;">
+                <h3 style="margin-bottom: 1rem;">📊 Статистика</h3>
+                <div style="display: grid; gap: 0.5rem;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Пользователи онлайн:</span>
+                        <strong id="statsOnline">0</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Всего пользователей:</span>
+                        <strong id="statsTotalUsers">0</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Постов создано:</span>
+                        <strong id="statsTotalPosts">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 1rem;">
+                <h3 style="margin-bottom: 1rem;">🎯 О REENKS</h3>
+                <p style="color: var(--gray); line-height: 1.5; font-size: 0.9rem;">
+                    REENKS - современная социальная сеть с реальным временем общения, созданием постов и сообществами. 
+                    Присоединяйтесь к нашему растущему сообществу! 🚀
+                </p>
+            </div>
+        </aside>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Глобальные переменные
+        let socket = null;
+        let currentUser = null;
+        let reconnectAttempts = 0;
+        const MAX_RECONNECT_ATTEMPTS = 5;
+
+        // Инициализация приложения
+        document.addEventListener('DOMContentLoaded', function() {
+            connectToREENKS();
+            setupEventListeners();
+            loadInitialStats();
+        });
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Счетчик символов для поста
+            const postInput = document.getElementById('postInput');
+            const charCount = document.getElementById('charCount');
+            
+            postInput.addEventListener('input', function() {
+                const length = this.value.length;
+                charCount.textContent = `${length}/500`;
+                
+                if (length > 450) {
+                    charCount.style.color = 'var(--warning)';
+                } else if (length > 490) {
+                    charCount.style.color = 'var(--accent)';
+                } else {
+                    charCount.style.color = 'var(--gray)';
+                }
+            });
+
+            // Создание поста по Ctrl+Enter
+            postInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                    createPost();
+                }
+            });
+
+            // Drag and drop для файлов
+            postInput.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                postInput.style.backgroundColor = 'var(--light)';
+            });
+
+            postInput.addEventListener('dragleave', () => {
+                postInput.style.backgroundColor = '';
+            });
+
+            postInput.addEventListener('drop', (e) => {
+                e.preventDefault();
+                postInput.style.backgroundColor = '';
+                showNotification('📁 Загрузка файлов скоро будет доступна!', 'info');
+            });
+        }
+
+        // Подключение к REENKS
+        function connectToREENKS() {
+            try {
+                showNotification('🔗 Подключаемся к REENKS...', 'info');
+                
+                // Закрываем предыдущее соединение если есть
+                if (socket) {
+                    socket.disconnect();
+                }
+                
+                socket = io({
+                    transports: ['websocket', 'polling'],
+                    upgrade: true,
+                    forceNew: true,
+                    timeout: 10000,
+                    reconnectionAttempts: MAX_RECONNECT_ATTEMPTS
+                });
+                
+                socket.on('connect', () => {
+                    showNotification('✅ Успешное подключение!', 'success');
+                    reconnectAttempts = 0;
+                    
+                    // Авто-регистрация
+                    const randomId = Math.random().toString(36).substring(2, 8);
+                    const userNames = ['Алексей', 'Мария', 'Дмитрий', 'Анна', 'Сергей', 'Елена', 'Иван'];
+                    const randomName = userNames[Math.floor(Math.random() * userNames.length)];
+                    
+                    socket.emit('register', {
+                        firstName: randomName,
+                        lastName: 'Пользователь',
+                        username: `user_${randomId}`,
+                        bio: 'Исследую возможности REENKS! 🚀'
+                    });
+                });
+                
+                socket.on('registered', (data) => {
+                    currentUser = data.user;
+                    updateUserInfo(data.user);
+                    updateStats(data);
+                    loadFeed(data.feed);
+                    showNotification(`🎉 Добро пожаловать, ${data.user.firstName}!`, 'success');
+                });
+                
+                socket.on('user-joined', (data) => {
+                    addOnlineUser(data.user);
+                    updateOnlineStats(data.onlineCount);
+                    showNotification(`👋 ${data.user.firstName} присоединился(ась)`, 'info');
+                });
+                
+                socket.on('user-left', (data) => {
+                    removeOnlineUser(data.userId);
+                    updateOnlineStats(data.onlineCount);
+                });
+                
+                socket.on('new-post', (post) => {
+                    addPostToFeed(post);
+                    updatePostStats();
+                    showNotification(`📝 Новый пост от ${post.author.firstName}`, 'info');
+                });
+                
+                socket.on('post-liked', (data) => {
+                    updatePostLikes(data.postId, data.likes);
+                });
+                
+                socket.on('new-comment', (data) => {
+                    addCommentToPost(data.postId, data.comment);
+                    showNotification(`💬 Новый комментарий от ${data.comment.author.firstName}`, 'info');
+                });
+                
+                socket.on('users-list', (users) => {
+                    updateOnlineUsersList(users);
+                });
+                
+                socket.on('error', (data) => {
+                    showNotification(`❌ Ошибка: ${data.message}`, 'error');
+                });
+                
+                socket.on('disconnect', (reason) => {
+                    showNotification('🔌 Соединение прервано', 'error');
+                    document.getElementById('userStatus').textContent = '● отключен';
+                    document.getElementById('userStatus').style.color = 'var(--accent)';
+                    
+                    // Авто-реконнект
+                    if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+                        reconnectAttempts++;
+                        setTimeout(() => {
+                            showNotification(`🔄 Переподключение... (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})`, 'info');
+                            connectToREENKS();
+                        }, 3000);
+                    }
+                });
+
+                socket.on('connect_error', (error) => {
+                    console.error('Connection error:', error);
+                    showNotification('❌ Ошибка подключения к серверу', 'error');
+                });
+
+            } catch (error) {
+                console.error('Connection setup error:', error);
+                showNotification('❌ Ошибка инициализации подключения', 'error');
+            }
+        }
+
+        // Создание поста
+        function createPost() {
+            if (!socket || !currentUser) {
+                showNotification('⚠️ Сначала подключитесь к REENKS!', 'error');
+                connectToREENKS();
+                return;
+            }
+            
+            const postInput = document.getElementById('postInput');
+            const content = postInput.value.trim();
+            
+            if (!content) {
+                showNotification('📝 Введите текст поста!', 'error');
+                postInput.focus();
+                return;
+            }
+            
+            if (content.length > 500) {
+                showNotification('⚠️ Пост не должен превышать 500 символов', 'error');
+                return;
+            }
+            
+            // Блокируем кнопку на время отправки
+            const btn = document.querySelector('.create-post .btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="loader"></span> Публикация...';
+            btn.disabled = true;
+            
+            socket.emit('create-post', { 
+                content: content,
+                timestamp: new Date().toISOString()
+            });
+            
+            postInput.value = '';
+            document.getElementById('charCount').textContent = '0/500';
+            document.getElementById('charCount').style.color = 'var(--gray)';
+            
+            // Восстанавливаем кнопку через 2 секунды
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        }
+
+        // Лайк поста
+        function likePost(postId) {
+            if (socket && currentUser) {
+                socket.emit('like-post', postId);
+            } else {
+                showNotification('⚠️ Сначала подключитесь!', 'error');
+            }
+        }
+
+        // Комментирование поста
+        function commentOnPost(postId) {
+            const content = prompt('Введите ваш комментарий:');
+            if (content && content.trim() && socket) {
+                socket.emit('add-comment', {
+                    postId: postId,
+                    content: content.trim()
+                });
+            }
+        }
+
+        // Обновление информации пользователя
+        function updateUserInfo(user) {
+            document.getElementById('userName').textContent = user.firstName + ' ' + user.lastName;
+            document.getElementById('userAvatar').src = user.avatar;
+            document.getElementById('currentUserAvatar').src = user.avatar;
+            document.getElementById('userStatus').textContent = '● онлайн';
+            document.getElementById('userStatus').style.color = 'var(--success)';
+        }
+
+        // Обновление статистики
+        function updateStats(data) {
+            document.getElementById('statsOnline').textContent = data.onlineCount;
+            document.getElementById('statsTotalUsers').textContent = data.totalUsers;
+            document.getElementById('statsTotalPosts').textContent = data.totalPosts;
+        }
+
+        function updateOnlineStats(onlineCount) {
+            document.getElementById('statsOnline').textContent = onlineCount;
+        }
+
+        function updatePostStats() {
+            const current = parseInt(document.getElementById('statsTotalPosts').textContent);
+            document.getElementById('statsTotalPosts').textContent = current + 1;
+        }
+
+        // Загрузка ленты
+        function loadFeed(feed) {
+            const feedContainer = document.getElementById('postsFeed');
+            
+            if (feed && feed.length > 0) {
+                feedContainer.innerHTML = '';
+                feed.forEach(post => addPostToFeed(post));
+            } else {
+                feedContainer.innerHTML = `
+                    <div class="card">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📝</div>
+                            <h3>Лента пуста</h3>
+                            <p>Будьте первым, кто опубликует пост!</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Добавление поста в ленту
+        function addPostToFeed(post) {
+            const feedContainer = document.getElementById('postsFeed');
+            
+            // Убираем сообщение о пустой ленте
+            if (feedContainer.querySelector('.empty-state')) {
+                feedContainer.innerHTML = '';
+            }
+            
+            const postElement = document.createElement('div');
+            postElement.className = 'card post fade-in';
+            postElement.id = 'post-' + post.id;
+            
+            const timeAgo = getTimeAgo(post.createdAt);
+            
+            postElement.innerHTML = `
+                <div class="post-header">
+                    <img src="${post.author.avatar}" alt="Аватар ${post.author.firstName}" class="user-avatar">
+                    <div>
+                        <div class="post-author">${post.author.firstName} ${post.author.lastName}</div>
+                        <div class="post-time">${timeAgo}</div>
+                    </div>
+                </div>
+                <div class="post-content">${escapeHTML(post.content)}</div>
+                <div class="post-stats">
+                    <span>❤️ ${post.likes || 0} лайков</span>
+                    <span>💬 ${post.comments ? post.comments.length : 0} комментариев</span>
+                    <span>👁️ ${Math.floor(Math.random() * 50)} просмотров</span>
+                </div>
+                <div class="post-actions-bar">
+                    <div class="post-action" onclick="likePost('${post.id}')">
+                        ❤️ Нравится
+                    </div>
+                    <div class="post-action" onclick="commentOnPost('${post.id}')">
+                        💬 Комментировать
+                    </div>
+                    <div class="post-action" onclick="sharePost('${post.id}')">
+                        🔗 Поделиться
+                    </div>
+                </div>
+                ${post.comments && post.comments.length > 0 ? `
+                    <div style="margin-top: 1rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--gray);">Комментарии:</div>
+                        ${post.comments.map(comment => `
+                            <div style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <img src="${comment.author.avatar}" alt="Аватар" style="width: 30px; height: 30px; border-radius: 50%;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 0.9rem;">${comment.author.firstName}</div>
+                                    <div style="font-size: 0.9rem;">${escapeHTML(comment.content)}</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray); margin-top: 0.25rem;">${getTimeAgo(comment.createdAt)}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            `;
+            
+            feedContainer.insertBefore(postElement, feedContainer.firstChild);
+        }
+
+        // Обновление лайков поста
+        function updatePostLikes(postId, likes) {
+            const postElement = document.getElementById('post-' + postId);
+            if (postElement) {
+                const likesElement = postElement.querySelector('.post-stats span:first-child');
+                if (likesElement) {
+                    likesElement.textContent = `❤️ ${likes} лайков`;
+                }
+            }
+        }
+
+        // Добавление комментария
+        function addCommentToPost(postId, comment) {
+            const postElement = document.getElementById('post-' + postId);
+            if (postElement) {
+                let commentsContainer = postElement.querySelector('.post-comments');
+                if (!commentsContainer) {
+                    // Создаем контейнер для комментариев
+                    const statsElement = postElement.querySelector('.post-stats');
+                    const actionsBar = postElement.querySelector('.post-actions-bar');
+                    
+                    commentsContainer = document.createElement('div');
+                    commentsContainer.style.marginTop = '1rem';
+                    commentsContainer.style.borderTop = '1px solid #e2e8f0';
+                    commentsContainer.style.paddingTop = '1rem';
+                    commentsContainer.className = 'post-comments';
+                    commentsContainer.innerHTML = '<div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--gray);">Комментарии:</div>';
+                    
+                    postElement.insertBefore(commentsContainer, actionsBar.nextSibling);
+                }
+                
+                const commentElement = document.createElement('div');
+                commentElement.style.display = 'flex';
+                commentElement.style.alignItems = 'flex-start';
+                commentElement.style.gap = '0.5rem';
+                commentElement.style.marginBottom = '0.5rem';
+                commentElement.innerHTML = `
+                    <img src="${comment.author.avatar}" alt="Аватар" style="width: 30px; height: 30px; border-radius: 50%;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 0.9rem;">${comment.author.firstName}</div>
+                        <div style="font-size: 0.9rem;">${escapeHTML(comment.content)}</div>
+                        <div style="font-size: 0.8rem; color: var(--gray); margin-top: 0.25rem;">${getTimeAgo(comment.createdAt)}</div>
+                    </div>
+                `;
+                commentsContainer.appendChild(commentElement);
+                
+                // Обновляем счетчик комментариев
+                const commentsCountElement = postElement.querySelector('.post-stats span:nth-child(2)');
+                if (commentsCountElement) {
+                    const currentCount = parseInt(commentsCountElement.textContent.match(/\d+/)[0]);
+                    commentsCountElement.textContent = `💬 ${currentCount + 1} комментариев`;
+                }
+            }
+        }
+
+        // Обновление списка онлайн пользователей
+        function updateOnlineUsersList(users) {
+            const onlineUsersContainer = document.getElementById('onlineUsers');
+            const onlineUsers = users.filter(user => user.isOnline);
+            
+            if (onlineUsers.length > 0) {
+                onlineUsersContainer.innerHTML = onlineUsers.map(user => `
+                    <div class="online-user">
+                        <div class="online-indicator"></div>
+                        <img src="${user.avatar}" alt="Аватар ${user.firstName}" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <div>
+                            <div style="font-weight: 500;">${user.firstName}</div>
+                            <div style="font-size: 0.8rem; color: var(--gray);">@${user.username}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                onlineUsersContainer.innerHTML = `
+                    <div class="empty-state" style="padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">👤</div>
+                        <div style="font-size: 0.9rem;">Никого нет онлайн</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Добавление онлайн пользователя
+        function addOnlineUser(user) {
+            const onlineUsersContainer = document.getElementById('onlineUsers');
+            
+            // Убираем сообщение о пустом списке
+            if (onlineUsersContainer.querySelector('.empty-state')) {
+                onlineUsersContainer.innerHTML = '';
+            }
+            
+            const userElement = document.createElement('div');
+            userElement.className = 'online-user fade-in';
+            userElement.innerHTML = `
+                <div class="online-indicator"></div>
+                <img src="${user.avatar}" alt="Аватар ${user.firstName}" style="width: 40px; height: 40px; border-radius: 50%;">
+                <div>
+                    <div style="font-weight: 500;">${user.firstName}</div>
+                    <div style="font-size: 0.8rem; color: var(--gray);">@${user.username}</div>
+                </div>
+            `;
+            onlineUsersContainer.appendChild(userElement);
+        }
+
+        // Удаление онлайн пользователя
+        function removeOnlineUser(userId) {
+            // В реальном приложении здесь была бы логика удаления пользователя из списка
+            console.log('User left:', userId);
+        }
+
+        // Показать уведомление
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const messageElement = document.getElementById('notificationMessage');
+            
+            // Очищаем предыдущие классы
+            notification.className = 'notification';
+            
+            messageElement.textContent = message;
+            notification.classList.add('show', type);
+            
+            // Авто-скрытие в зависимости от типа
+            const duration = type === 'error' ? 5000 : 3000;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, duration);
+        }
+
+        // Поделиться постом
+        function sharePost(postId) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'REENKS - Интересный пост',
+                    text: 'Посмотрите этот пост в REENKS!',
+                    url: window.location.href + '#post-' + postId
+                }).catch(() => {
+                    showNotification('📤 Поделиться отменено', 'info');
+                });
+            } else {
+                showNotification('📤 Функция "Поделиться" скоро будет доступна!', 'info');
+            }
+        }
+
+        // Вспомогательные функции
+        function getTimeAgo(timestamp) {
+            const now = new Date();
+            const time = new Date(timestamp);
+            const diff = now - time;
+            
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return 'только что';
+            if (minutes < 60) return `${minutes} мин назад`;
+            if (hours < 24) return `${hours} ч назад`;
+            if (days < 7) return `${days} дн назад`;
+            
+            return time.toLocaleDateString('ru-RU');
+        }
+
+        function escapeHTML(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Загрузка начальной статистики
+        async function loadInitialStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const data = await response.json();
+                document.getElementById('statsOnline').textContent = data.onlineUsers;
+                document.getElementById('statsTotalUsers').textContent = data.totalUsers;
+                document.getElementById('statsTotalPosts').textContent = data.totalPosts;
+            } catch (error) {
+                console.log('Не удалось загрузить начальную статистику');
+            }
+        }
+
+        // Запрос списка пользователей
+        function loadOnlineUsers() {
+            if (socket) {
+                socket.emit('get-users');
+            }
+        }
+
+        // Периодическое обновление статистики
+        setInterval(loadOnlineUsers, 30000);
+    </script>
+</body>
+</html>
